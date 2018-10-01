@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server/server.js",
-    "server": "nodemon server/server.js | yarn run prettier",
+    "start-server": "nodemon server/app.js",
+    "server": "concurrently -n api,prettier \"  yarn run start-server  \" \"  yarn run prettier  \"",
     "prettier": "npx onchange 'server/**/*.*' -- npx prettier --write {{changed}}"
   },
   "keywords": [],
