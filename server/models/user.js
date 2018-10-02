@@ -42,17 +42,15 @@ const userSchema = mongoose.Schema({
   }
 });
 
-userSchema.pre('save', function(next) {
-  if (this.isModified('password')) {
-    bcrypt.genSalt(SALT_I, (err, salt) => {
-      if (err) return next(err);
-
-      bcrypt.hash(this.password, salt, (err, hash) => {
-        if (err) return next(err);
-        this.password = hash;
-        next();
-      });
-    });
+userSchema.pre('save', async function(next) {
+  const user = this;
+  if (user.isModified('password')) {
+    await bcrypt
+      .genSalt(SALT_I)
+      .then(salt => bcrypt.hash(user.password, salt))
+      .then(hash => (user.password = hash))
+      .then(() => next())
+      .catch(error => next(error));
   } else {
     next();
   }

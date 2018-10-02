@@ -18,11 +18,19 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   try {
     const { email } = req.body;
-    const user = await User.findOne({ email: email });
+    const user = await User.findOne({ email });
+
+    if (user !== null) {
+      const user = await User.findOne({ email });
+    } else {
+      res.json(400, {
+        loginSuccess: false,
+        message: 'Auth failed, email not found'
+      });
+    }
   } catch (error) {
-    return res.json({
+    return res.json(400, {
       loginSuccess: false,
-      message: 'Auth failed, email not found',
       error
     });
   }
