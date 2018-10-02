@@ -2,23 +2,30 @@ const express = require('express'),
   router = express.Router();
 const { User } = require('../models/user');
 
-router.post('/register', (req, res) => {
-  const user = new User(req.body);
-  user.save((err, doc) => {
-    console.log('dima');
-    if (err) return res.json({ success: false, err });
+router.post('/register', async (req, res) => {
+  try {
+    const user = await User.create(req.body);
+
     res.status(200).json({
       success: true,
-      userData: doc
+      user
     });
-  });
+  } catch (error) {
+    res.json({ success: false, error });
+  }
 });
 
-router.get('/dima', (req, res) => {
-  res.status(200).json({
-    success: true,
-    userData: 'dima'
-  });
+router.post('/login', async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email: email });
+  } catch (error) {
+    return res.json({
+      loginSuccess: false,
+      message: 'Auth failed, email not found',
+      error
+    });
+  }
 });
 
 module.exports = router;
