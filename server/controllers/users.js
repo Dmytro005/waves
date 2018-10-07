@@ -21,15 +21,36 @@ router.post('/login', async (req, res) => {
     const user = await User.findOne({ email });
 
     if (user !== null) {
-      const user = await User.findOne({ email });
+      await user
+        .comparePassword(req.body.password)
+        .then(data => {
+          if (data) {
+            res.status(200).json({
+              loginSuccess: true,
+              message: 'Logging you in'
+            });
+          } else {
+            res.status(400).json({
+              loginSuccess: false,
+              message: 'Wrong password'
+            });
+          }
+        })
+
+        .catch(error => {
+          res.status(400).json({
+            loginSuccess: false,
+            error
+          });
+        });
     } else {
-      res.json(400, {
+      res.status(400).json({
         loginSuccess: false,
         message: 'Auth failed, email not found'
       });
     }
   } catch (error) {
-    return res.json(400, {
+    return res.status(400).json({
       loginSuccess: false,
       error
     });
