@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const nodemon = require('nodemon');
 
 const app = express();
 
@@ -21,3 +22,19 @@ app.listen(port, () => {
 app.use(require('./controllers'));
 
 module.exports = app;
+
+// This code added so that nodemon could exit process properly
+// https://github.com/remy/nodemon/issues/1025
+
+process
+  // Handle normal exits
+  .on('exit', code => {
+    nodemon.emit('quit');
+    process.exit(code);
+  })
+
+  // Handle CTRL+C
+  .on('SIGINT', () => {
+    nodemon.emit('quit');
+    process.exit(0);
+  });

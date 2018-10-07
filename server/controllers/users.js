@@ -23,12 +23,16 @@ router.post('/login', async (req, res) => {
     if (user !== null) {
       await user
         .comparePassword(req.body.password)
-        .then(data => {
+        .then(async data => {
           if (data) {
-            res.status(200).json({
-              loginSuccess: true,
-              message: 'Logging you in'
-            });
+            const token = await user.generateToken();
+            res
+              .cookie('w-auth', token)
+              .status(200)
+              .json({
+                loginSuccess: true,
+                message: 'Logging you in'
+              });
           } else {
             res.status(400).json({
               loginSuccess: false,
@@ -38,6 +42,7 @@ router.post('/login', async (req, res) => {
         })
 
         .catch(error => {
+          console.error(error);
           res.status(400).json({
             loginSuccess: false,
             error
