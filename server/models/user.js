@@ -17,12 +17,12 @@ const userSchema = mongoose.Schema({
     required: true,
     minLength: 5
   },
-  name: {
+  firstName: {
     type: String,
     required: true,
     maxLength: 100
   },
-  name: {
+  lastName: {
     type: String,
     required: true,
     maxLength: 100
@@ -58,8 +58,6 @@ userSchema.pre('save', async function(next) {
   }
 });
 
-//console.log('require', process.env.);
-
 userSchema.methods.comparePassword = async function(password) {
   try {
     return await bcrypt.compare(password, this.password);
@@ -73,6 +71,12 @@ userSchema.methods.generateToken = async function() {
   this.token = token;
   const { token: savedToken } = await this.save();
   return savedToken;
+};
+
+userSchema.statics.findByToken = async function(token) {
+  const decoded = jwt.verify(token, process.env.SECRET);
+  const { _doc: user } = await this.findOne({ _id: decoded, token });
+  return user;
 };
 
 const User = mongoose.model('User', userSchema);
