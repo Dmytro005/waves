@@ -47,6 +47,7 @@ router.post('/login', async (req, res) => {
         .then(async data => {
           if (data) {
             const token = await user.generateToken();
+
             res
               .cookie('w_auth', token)
               .status(200)
@@ -85,7 +86,6 @@ router.post('/login', async (req, res) => {
 
 router.get('/logout', auth, async (req, res) => {
   try {
-    console.log(req.user);
     const { token, password, ...user } = req.user;
     User.findByIdAndUpdate(user._id, { token: '' }).then(user => {
       res.status(200).json({
