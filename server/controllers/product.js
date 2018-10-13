@@ -22,4 +22,17 @@ router.post('/brand', auth, role, async (req, res) => {
   }
 });
 
+router.get('/brands', async (req, res) => {
+  try {
+    return res.status(200).json({
+      brands: await Brand.find({}),
+      success: true
+    });
+  } catch (error) {
+    res.status(400).json({
+      error
+    });
+  }
+});
+
 module.exports = router;
