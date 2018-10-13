@@ -74,9 +74,16 @@ userSchema.methods.generateToken = async function() {
 };
 
 userSchema.statics.findByToken = async function(token) {
-  const decoded = jwt.verify(token, process.env.SECRET);
-  const { _doc: user } = await this.findOne({ _id: decoded, token });
-  return user;
+  try {
+    const decoded = jwt.verify(token, process.env.SECRET);
+    const user = await this.findOne({ _id: decoded, token });
+    if (!user) {
+      throw new Error('Token is not valid');
+    }
+    return user._doc;
+  } catch (error) {
+    throw Error(error);
+  }
 };
 
 const User = mongoose.model('User', userSchema);
