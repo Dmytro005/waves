@@ -14,15 +14,6 @@ router.get('/auth', auth, async (req, res) => {
   });
 });
 
-router.get('/auth', auth, async (req, res) => {
-  const { token, password, ...data } = req.user;
-  res.status(200).json({
-    isAdmin: data.role ? true : false,
-    isAuthed: true,
-    ...data
-  });
-});
-
 router.post('/register', async (req, res) => {
   try {
     const user = await User.create(req.body);
