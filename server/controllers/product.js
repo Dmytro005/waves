@@ -1,6 +1,8 @@
 const express = require('express'),
   router = express.Router();
 
+const mongoose = require('mongoose');
+
 const { auth } = require('../middleware/auth');
 const { admin } = require('../middleware/admin');
 
@@ -90,16 +92,26 @@ router.get('/articles', async (req, res) => {
 
 router.get('/article_by_id', async (req, res) => {
   try {
-    let type = req.query.type;
-    let item = req.query.id;
+    const type = req.query.type;
+    let items = req.query.id;
+
+    if (type === 'array') {
+      items = items.split(',').map(item => mongoose.Types.ObjectId(item));
+    } else {
+      items = mongoose.Types.ObjectId(items);
+    }
+
+    const articles = await Product.find({ _id: { $in: items } }).populate(
+      'brand wood'
+    );
 
     res.status(200).json({
-      type,
-      item
+      articles
     });
   } catch (error) {
+    throw new Error(error);
     res.status(400).json({
-      error
+      error: error.message
     });
   }
 });
