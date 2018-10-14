@@ -79,13 +79,22 @@ router.post('/article', auth, admin, async (req, res) => {
 
 router.get('/articles', async (req, res) => {
   try {
+    const order = req.query.order ? req.query.order : 'asc';
+    const sortBy = req.query.sortBy ? req.query.sortBy : '_id';
+    const limit = req.query.limit ? Number(req.query.limit) : 100;
+
+    const articles = await Product.find()
+      .populate('brand wood')
+      .sort([[sortBy, order]])
+      .limit(limit);
+
     return res.status(200).json({
-      articles: await Product.find({}),
+      articles,
       success: true
     });
   } catch (error) {
     res.status(400).json({
-      error
+      error: error.message
     });
   }
 });
