@@ -1,4 +1,4 @@
-let role = async (req, res, next) => {
+let admin = async (req, res, next) => {
   try {
     if (req.user.role === 0) {
       throw new Error("You don't have enougn rights to perform this action");
@@ -12,4 +12,4 @@ let role = async (req, res, next) => {
   }
 };
 
-module.exports = { role };
+module.exports = { admin };

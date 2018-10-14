@@ -1,4 +1,3 @@
-require('dotenv').config();
 const mongoose = require('mongoose');
 
 const productSchema = mongoose.Schema(
@@ -14,7 +13,6 @@ const productSchema = mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-      unique: true,
       maxlength: 100
     },
     price: {
