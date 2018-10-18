@@ -1,6 +1,8 @@
 import React from 'react';
 import Button from 'components/Button';
 
+import Login from './login';
+
 const RegisterLogin = () => {
   return (
     <div className="page_wrapper">
@@ -24,6 +26,7 @@ const RegisterLogin = () => {
           <div className="right">
             <h2>Register customers</h2>
             <p>If you have an accont please, log-in</p>
+            <Login />
           </div>
         </div>
       </div>

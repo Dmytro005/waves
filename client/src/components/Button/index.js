@@ -13,6 +13,17 @@ const Button = props => {
           </Link>
         );
         break;
+      case 'button':
+        template = (
+          <button
+            className="link_default"
+            {...props.addStyles}
+            onClick={() => props.onClick}
+          >
+            {props.title}
+          </button>
+        );
+        break;
       default:
         break;
     }
