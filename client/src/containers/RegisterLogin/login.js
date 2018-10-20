@@ -5,6 +5,7 @@ import FormField from 'components/FormField';
 import Button from 'components/Button';
 
 import { update, submit } from 'utils/form/formActions';
+import { triggerInvalidFields } from 'utils/form/formValidations';
 
 function mapStateToProps(state) {
   return {};
@@ -36,13 +37,13 @@ class Login extends Component {
         element: 'input',
         value: '',
         config: {
-          name: 'passowrd_input',
-          type: 'passowrd',
-          placeholder: 'Enter your passowrd'
+          name: 'password_input',
+          type: 'password',
+          placeholder: 'Enter your password'
         },
         validation: {
           required: true,
-          passowrd: true
+          password: true
         },
         valid: false,
         touched: false,
@@ -60,8 +61,11 @@ class Login extends Component {
 
   submitForm = event => {
     event.preventDefault();
-    const dataToSubmit = submit(this.state.formData);
-    console.log(dataToSubmit);
+    const { formIsValid, data } = submit(this.state.formData);
+    if (formIsValid) {
+    } else {
+      triggerInvalidFields(data);
+    }
   };
 
   render() {

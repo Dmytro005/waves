@@ -31,12 +31,11 @@ export const update = (element, formData, formType) => {
 /**
  *
  * @param {Object} formData Object of form
- *
- * @returns {}
  */
 export const submit = formData => {
   let dataToSubmit = {};
   let formIsValid = true;
+  let invalidFields = [];
 
   for (let key in formData) {
     dataToSubmit[key] = formData[key].value;
@@ -44,9 +43,15 @@ export const submit = formData => {
 
   for (let key in formData) {
     formIsValid = formData[key].valid && formIsValid;
+    if (!formData[key].valid) {
+      invalidFields.push(formData[key].config.name);
+    }
   }
 
-  return formIsValid ? dataToSubmit : false;
+  return {
+    formIsValid,
+    data: formIsValid ? dataToSubmit : invalidFields
+  };
 };
 
 /**
@@ -74,13 +79,13 @@ export const submit = formData => {
         element: 'input',
         value: '',
         config: {
-          name: 'passowrd_input',
-          type: 'passowrd',
-          placeholder: 'Enter your passowrd'
+          name: 'password_input',
+          type: 'password',
+          placeholder: 'Enter your password'
         },
         validation: {
           required: true,
-          passowrd: true
+          password: true
         },
         valid: false,
         touched: false,
