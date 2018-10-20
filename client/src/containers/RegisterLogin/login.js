@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import FormField from 'components/FormField';
 import Button from 'components/Button';
 
-const EMAIL_REGEX_PATTERN = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+import { update, submit } from 'utils/form/formActions';
 
 function mapStateToProps(state) {
   return {};
@@ -52,72 +52,16 @@ class Login extends Component {
   };
 
   updateForm(element) {
-    const newFormData = {
-      ...this.state.formData
-    };
-    const newElement = {
-      ...newFormData[element.id]
-    };
-
-    newElement.value = element.event.target.value;
-
-    if (element.blur) {
-      let validData = this.validate(newElement);
-      newElement.valid = validData[0];
-      newElement.validationMessage = validData[1];
-    }
-
-    newElement.touched = element.blur;
-    newFormData[element.id] = newElement;
-
+    const newFormData = update(element, this.state.formData, 'logIn');
     this.setState({
       formData: newFormData
     });
   }
 
-  validate = element => {
-    let err = [true, ''];
-
-    if (element.validation.email) {
-      const valid = EMAIL_REGEX_PATTERN.test(element.value);
-      const message = `${!valid ? 'Enter the valid email' : ''}`;
-      err = !valid ? [valid, message] : err;
-    }
-
-    if (element.validation.passowrd) {
-      const valid = element.value.length >= 5;
-      const message = `${!valid ? 'This field must be greater than 5' : ''}`;
-      err = !valid ? [valid, message] : err;
-    }
-
-    if (element.validation.required) {
-      const valid = element.value.trim() !== '';
-      const message = `${!valid ? 'This field is required' : ''}`;
-      err = !valid ? [valid, message] : err;
-    }
-
-    return err;
-  };
-
   submitForm = event => {
     event.preventDefault();
-    let dataToSubmit = {};
-    let formIsValid = true;
-
-    for (let key in this.state.formData) {
-      dataToSubmit[key] = this.state.formData[key].value;
-    }
-
-    for (let key in this.state.formData) {
-      formIsValid = this.state.formData[key].valid && formIsValid;
-    }
-
-    if (formIsValid) {
-      this.setState({
-        loading: true,
-        formData: ''
-      });
-    }
+    const dataToSubmit = submit(this.state.formData);
+    console.log(dataToSubmit);
   };
 
   render() {
