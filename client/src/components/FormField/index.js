@@ -44,7 +44,9 @@ const FormField = ({ formData, change, id }) => {
   const showError = () => {
     let errorMessage = null;
     if (formData.validation && !formData.valid) {
-      errorMessage = <div>{formData.validationMessage}</div>;
+      errorMessage = (
+        <div className="error_label">{formData.validationMessage}</div>
+      );
     }
 
     return errorMessage;

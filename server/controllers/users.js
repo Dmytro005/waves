@@ -47,7 +47,7 @@ router.post('/login', async (req, res) => {
                 message: 'Logging you in'
               });
           } else {
-            res.status(400).json({
+            res.status(401).json({
               loginSuccess: false,
               message: 'Wrong password'
             });
@@ -56,7 +56,7 @@ router.post('/login', async (req, res) => {
 
         .catch(error => {
           console.error(error);
-          res.status(400).json({
+          res.status(401).json({
             loginSuccess: false,
             error
           });

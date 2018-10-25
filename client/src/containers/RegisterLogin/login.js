@@ -7,8 +7,12 @@ import Button from 'components/Button';
 import { update, submit } from 'utils/form/formActions';
 import { triggerInvalidFields } from 'utils/form/formValidations';
 
+import { loginUser } from 'actions/user_actions';
+
 function mapStateToProps(state) {
-  return {};
+  return {
+    user: state.user
+  };
 }
 
 class Login extends Component {
@@ -59,10 +63,12 @@ class Login extends Component {
     });
   }
 
-  submitForm = event => {
+  submitForm = async event => {
     event.preventDefault();
     const { formIsValid, data } = submit(this.state.formData);
     if (formIsValid) {
+      await this.props.dispatch(loginUser(data));
+      console.log(this.props);
     } else {
       triggerInvalidFields(data);
     }
@@ -82,6 +88,11 @@ class Login extends Component {
             formData={this.state.formData.password}
             change={element => this.updateForm(element)}
           />
+
+          {this.state.formError ? (
+            <div className="error_label">{this.state.formError}</div>
+          ) : null}
+
           <Button
             type="button"
             onClick={e => this.submitForm(e)}
