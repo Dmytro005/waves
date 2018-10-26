@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import FormField from 'components/FormField';
 import Button from 'components/Button';
@@ -65,10 +66,17 @@ class Login extends Component {
 
   submitForm = async event => {
     event.preventDefault();
+    this.setState({ formError: null });
     const { formIsValid, data } = submit(this.state.formData);
     if (formIsValid) {
       await this.props.dispatch(loginUser(data));
-      console.log(this.props);
+      if (this.props.user.loginSuccess) {
+        this.props.history.push('/user/dashboard');
+      } else {
+        this.setState({
+          formError: this.props.user.message
+        });
+      }
     } else {
       triggerInvalidFields(data);
     }
@@ -107,4 +115,4 @@ class Login extends Component {
   }
 }
 
-export default connect(mapStateToProps)(Login);
+export default connect(mapStateToProps)(withRouter(Login));

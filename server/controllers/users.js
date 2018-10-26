@@ -58,17 +58,17 @@ router.post('/login', async (req, res) => {
           console.error(error);
           res.status(401).json({
             loginSuccess: false,
-            error
+            message: error.message
           });
         });
     } else {
-      res.status(400).json({
+      res.status(401).json({
         loginSuccess: false,
         message: 'Auth failed, email not found'
       });
     }
   } catch (error) {
-    return res.status(400).json({
+    return res.status(500).json({
       loginSuccess: false,
       error
     });
