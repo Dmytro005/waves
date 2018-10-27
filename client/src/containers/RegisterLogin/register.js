@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import Dialog from '@material-ui/core/Dialog';
 import FormField from 'components/FormField';
 import Button from 'components/Button';
 
@@ -115,6 +116,7 @@ class Register extends Component {
     if (formIsValid) {
       await this.props.dispatch(registerUser(data));
       if (this.props.user.registerSuccess) {
+        this.setState({ formSuccess: true });
         setTimeout(() => {
           this.props.history.push('/register_login');
         }, 3000);
@@ -185,6 +187,13 @@ class Register extends Component {
             </div>
           </div>
         </div>
+        <Dialog open={this.state.formSuccess}>
+          <div className="dialog_alert text-center">
+            <h2>Congratulations!</h2>
+            <div>You`re account was successfully created</div>
+            <p>Soon you will be redirected to login</p>
+          </div>
+        </Dialog>
       </div>
     );
   }
