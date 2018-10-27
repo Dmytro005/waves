@@ -17,7 +17,7 @@ export const update = (element, formData, formType) => {
   newElement.value = element.event.target.value;
 
   if (element.blur) {
-    let validData = validateField(newElement);
+    let validData = validateField(newElement, formData);
     newElement.valid = validData[0];
     newElement.validationMessage = validData[1];
   }
@@ -38,7 +38,9 @@ export const submit = formData => {
   let invalidFields = [];
 
   for (let key in formData) {
-    dataToSubmit[key] = formData[key].value;
+    if (key !== 'repeatPassword') {
+      dataToSubmit[key] = formData[key].value;
+    }
   }
 
   for (let key in formData) {

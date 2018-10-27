@@ -104,7 +104,7 @@ class Login extends Component {
           <Button
             type="button"
             onClick={e => this.submitForm(e)}
-            title="Create an account"
+            title="Log in"
             addStyles={{
               margin: '10px 0 0 0'
             }}

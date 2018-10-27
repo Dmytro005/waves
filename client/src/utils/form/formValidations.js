@@ -19,7 +19,7 @@ const EMAIL_REGEX_PATTERN = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
     touched: false,
     validationMessage: ''
  */
-export const validateField = element => {
+export const validateField = (element, formData) => {
   let err = [true, ''];
 
   if (element.validation.email) {
@@ -37,6 +37,13 @@ export const validateField = element => {
   if (element.validation.required) {
     const valid = element.value.trim() !== '';
     const message = `${!valid ? 'This field is required' : ''}`;
+    err = !valid ? [valid, message] : err;
+  }
+
+  if (element.validation.sameAs) {
+    const valid =
+      element.value.trim() === formData[element.validation.sameAs].value;
+    const message = `${!valid ? 'Passwords dosent match' : ''}`;
     err = !valid ? [valid, message] : err;
   }
 
