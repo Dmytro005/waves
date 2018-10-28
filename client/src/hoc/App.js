@@ -19,8 +19,6 @@ const links = [
 
 const App = props => {
   const generateLinks = links => {
-    console.log(links);
-
     return links.map((item, i) => (
       <Link to={item.linkTo} key={i}>
         {item.name}
