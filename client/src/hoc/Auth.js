@@ -16,14 +16,22 @@ export default function(ComposedClass, reload, adminRoute) {
     };
 
     async componentDidMount() {
-      await this.props.dispatch(authUser());
-      const { isAuthed, isAdmin } = this.props.user;
-      if (!isAuthed) {
+      let user = {
+        isAuthed: false,
+        isAdmin: false
+      };
+
+      if (document.cookie.split('=')[0] === 'w_auth') {
+        await this.props.dispatch(authUser());
+        user = this.props.user;
+      }
+
+      if (!user.isAuthed) {
         if (reload) {
           this.props.history.push('/register_login');
         }
       } else {
-        if (adminRoute && !isAdmin) {
+        if (adminRoute && !user.isAdmin) {
           this.props.history.push('/user/dashboard');
         } else {
           if (!reload) {
