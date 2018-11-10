@@ -878,3 +878,11 @@ footer .business_nfo .nfo {
 .text-center {
   text-align: center;
 }
+
+.ml-1 {
+  margin-left: 10px;
+}
+
+.c-p {
+  cursor: pointer;
+}
