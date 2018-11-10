@@ -19,7 +19,7 @@ const Routes = props => {
           component={Auth(RegisterLogin, false)}
         />
         <Route path="/register" exact component={Auth(Register, false)} />
-        <Route path="/" exact component={Auth(Home, null)} />
+        <Route path="/home" exact component={Auth(Home, null)} />
       </Layout>
     </Switch>
   );
