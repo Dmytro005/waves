@@ -42,7 +42,7 @@ class Header extends Component {
       },
       {
         name: 'Guitars',
-        linkTo: '/guitars',
+        linkTo: '/shop',
         public: true
       }
     ]

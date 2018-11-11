@@ -1,5 +1,5 @@
 import axios from 'utils/axios';
-import { GET_PRODUCTS_BY_SELL, GET_PRODUCTS_BY_ARRIVAL } from './types';
+import * as types from './types';
 
 import { PRODUCT_SERVER } from 'utils/misc';
 
@@ -10,7 +10,7 @@ export async function getProductsBySell() {
     .catch(({ response: { data } }) => ({ data }));
 
   return {
-    type: GET_PRODUCTS_BY_SELL,
+    type: types.GET_PRODUCTS_BY_SELL,
     payload
   };
 }
@@ -21,7 +21,29 @@ export function getProductsByArrival() {
     .then(response => response.data);
 
   return {
-    type: GET_PRODUCTS_BY_ARRIVAL,
+    type: types.GET_PRODUCTS_BY_ARRIVAL,
+    payload: request
+  };
+}
+
+export function getBrands() {
+  const request = axios
+    .get(`${PRODUCT_SERVER}/brands`)
+    .then(response => response.data);
+
+  return {
+    type: types.GET_BRANDS,
+    payload: request
+  };
+}
+
+export function getWoods() {
+  const request = axios
+    .get(`${PRODUCT_SERVER}/woods`)
+    .then(response => response.data);
+
+  return {
+    type: types.GET_WOODS,
     payload: request
   };
 }

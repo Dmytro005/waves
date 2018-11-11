@@ -557,6 +557,7 @@ footer .business_nfo .nfo {
 
 .shop_wrapper {
   display: flex;
+  padding: 0 10px;
 }
 
 .shop_wrapper .left {

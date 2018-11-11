@@ -7,6 +7,7 @@ import Home from './containers/Home';
 import RegisterLogin from './containers/RegisterLogin';
 import Register from './containers/RegisterLogin/register';
 import Dashboard from './containers/Dashboard';
+import Shop from './containers/Shop';
 
 const Routes = props => {
   return (
@@ -20,6 +21,7 @@ const Routes = props => {
         />
         <Route path="/register" exact component={Auth(Register, false)} />
         <Route path="/home" exact component={Auth(Home, null)} />
+        <Route path="/shop" exact component={Auth(Shop, null)} />
       </Layout>
     </Switch>
   );

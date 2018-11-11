@@ -26,17 +26,18 @@ export default function(ComposedClass, reload, adminRoute) {
         user = this.props.user;
       }
 
-      if (!user.isAuthed) {
-        if (reload) {
-          this.props.history.push('/register_login');
-        }
-      } else {
+      if (user.isAuthed) {
         if (adminRoute && !user.isAdmin) {
           this.props.history.push('/user/dashboard');
         } else {
-          if (!reload) {
-            this.props.history.push('/user/dashboard');
-          }
+          // if (reload) {
+          //   console.log('push');
+          //   this.props.history.push('/user/dashboard');
+          // }
+        }
+      } else {
+        if (reload) {
+          this.props.history.push('/register_login');
         }
       }
     }

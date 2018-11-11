@@ -54,7 +54,7 @@ router.post('/wood', auth, admin, async (req, res) => {
 router.get('/woods', async (req, res) => {
   try {
     return res.status(200).json({
-      brands: await Wood.find({}),
+      woods: await Wood.find({}),
       success: true
     });
   } catch (error) {
