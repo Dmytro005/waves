@@ -7,9 +7,9 @@ import {
   getProductsToShop
 } from 'actions/products_actions';
 
-import PageTop from 'utils/PageTop';
-import CollapseCheckbox from 'utils/CollapseCheckbox';
-import CollapseRadio from 'utils/CollapseRadio';
+import PageTop from 'components/Header/ShopHeader';
+import CollapseCheckbox from 'components/Collapse/CollapseCheckbox';
+import CollapseRadio from 'components/Collapse/CollapseRadio';
 import { frets, prices } from 'utils/form/fixedCategories';
 
 const mapStateToProps = state => {

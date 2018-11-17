@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class PageTop extends Component {
+class ShopHeader extends Component {
   render() {
     return (
       <div className="page_top">
@@ -10,4 +10,4 @@ class PageTop extends Component {
   }
 }
 
-export default PageTop;
+export default ShopHeader;

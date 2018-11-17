@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import HomeSlider from './home_slider';
 import HomePromotion from './home_promotion';
-import CardBlock from 'utils/CardBlock';
+import CardBlock from 'components/Product/CardBlock';
 
 import { connect } from 'react-redux';
 import {

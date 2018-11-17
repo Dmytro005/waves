@@ -64,8 +64,6 @@ export async function getProductsToShop(
     .post(`${PRODUCT_SERVER}/shop`, data)
     .then(response => response.data);
 
-  console.log(size, articles);
-
   return {
     type: types.GET_PRODUCTS_TO_SHOP,
     payload: { size, articles }
