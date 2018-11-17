@@ -10,6 +10,7 @@ import {
 import PageTop from 'components/Header/ShopHeader';
 import CollapseCheckbox from 'components/Collapse/CollapseCheckbox';
 import CollapseRadio from 'components/Collapse/CollapseRadio';
+import LoadMoreProducts from 'components/Product/LoadMoreProducts';
 import { frets, prices } from 'utils/form/fixedCategories';
 
 const mapStateToProps = state => {
@@ -20,7 +21,7 @@ const mapStateToProps = state => {
 
 class Shop extends Component {
   state = {
-    grid: '',
+    grid: false,
     limit: 6,
     skip: 0,
     filters: {
@@ -89,7 +90,19 @@ class Shop extends Component {
                 handleFilters={filters => this.handleFilters(filters, 'price')}
               />
             </div>
-            <div className="right">harazs</div>
+            <div className="right">
+              <div className="shop_options">
+                <div className="shop_grids">grids</div>
+              </div>
+              <div>
+                <LoadMoreProducts
+                  grid={this.state.grid}
+                  limit={this.state.limit}
+                  size={this.props.products.toShopSize}
+                  products={this.props.products.toShop}
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
