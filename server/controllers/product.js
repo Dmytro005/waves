@@ -6,7 +6,6 @@ const mongoose = require('mongoose');
 const { auth } = require('../middleware/auth');
 const { admin } = require('../middleware/admin');
 
-const { User } = require('../models/user');
 const { Brand } = require('../models/brand');
 const { Wood } = require('../models/wood');
 const { Product } = require('../models/product');
@@ -118,10 +117,49 @@ router.get('/article_by_id', async (req, res) => {
       articles
     });
   } catch (error) {
-    throw new Error(error);
     res.status(400).json({
       error: error.message
     });
+  }
+});
+
+router.post('/shop', async (req, res) => {
+  try {
+    let order = req.body.order || 'desc';
+    let sortBy = req.body.sortBy || '_id';
+    let limit = parseInt(req.body.limit, 10) || 10;
+    let skip = parseInt(req.body.skip, 10) || 0;
+    let { filters } = req.body;
+    let findArgs = {};
+
+    for (let key in filters) {
+      if (filters[key].length > 0) {
+        if (key === 'price') {
+          findArgs[key] = {
+            $gte: filters[key][0],
+            $lte: filters[key][1]
+          };
+        } else {
+          findArgs[key] = filters[key];
+        }
+      }
+    }
+
+    const articles = await Product.find(findArgs)
+      .populate('brand wood')
+      .sort({ [sortBy]: order })
+      .skip(skip)
+      .limit(limit);
+
+    return res.status(200).json({
+      articles,
+      size: articles.length
+    });
+  } catch (error) {
+    res.status(400).json({
+      error: error.message
+    });
+    throw new Error(error);
   }
 });
 
