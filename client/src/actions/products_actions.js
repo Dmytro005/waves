@@ -47,3 +47,27 @@ export function getWoods() {
     payload: request
   };
 }
+
+export async function getProductsToShop(
+  skip,
+  limit,
+  filters = [],
+  previoState = []
+) {
+  const data = {
+    skip,
+    limit,
+    filters
+  };
+
+  const { size, articles } = await axios
+    .post(`${PRODUCT_SERVER}/shop`, data)
+    .then(response => response.data);
+
+  console.log(size, articles);
+
+  return {
+    type: types.GET_PRODUCTS_TO_SHOP,
+    payload: { size, articles }
+  };
+}

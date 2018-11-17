@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { getBrands, getWoods } from 'actions/products_actions';
+import {
+  getBrands,
+  getWoods,
+  getProductsToShop
+} from 'actions/products_actions';
 
 import PageTop from 'utils/PageTop';
 import CollapseCheckbox from 'utils/CollapseCheckbox';
@@ -17,17 +21,21 @@ const mapStateToProps = state => {
 class Shop extends Component {
   state = {
     grid: '',
+    limit: 6,
+    skip: 0,
     filters: {
-      brands: [],
-      frets: [],
-      woods: [],
+      brand: [],
+      fret: [],
+      wood: [],
       price: []
     }
   };
 
   async componentWillMount() {
+    const { limit, skip, filters } = this.state;
     await this.props.dispatch(getBrands());
     await this.props.dispatch(getWoods());
+    await this.props.dispatch(getProductsToShop(limit, skip, filters));
   }
 
   handleFilters = (filters, category) => {
@@ -37,7 +45,16 @@ class Shop extends Component {
       let pricesValue = prices.find(price => price._id === filters).array;
       newFilters[category] = pricesValue;
     }
+
+    this.showFilteredResults(newFilters);
     this.setState({ filters: newFilters });
+  };
+
+  showFilteredResults = async filters => {
+    await this.props.dispatch(getProductsToShop(0, this.state.limit, filters));
+    this.setState({
+      skip: 0
+    });
   };
 
   render() {
@@ -51,7 +68,7 @@ class Shop extends Component {
                 initialState={true}
                 title="Brands"
                 list={this.props.products.brands}
-                handleFilters={filters => this.handleFilters(filters, 'brands')}
+                handleFilters={filters => this.handleFilters(filters, 'brand')}
               />
               <CollapseCheckbox
                 initialState={false}
@@ -63,7 +80,7 @@ class Shop extends Component {
                 initialState={false}
                 title="Woods"
                 list={this.props.products.woods}
-                handleFilters={filters => this.handleFilters(filters, 'woods')}
+                handleFilters={filters => this.handleFilters(filters, 'wood')}
               />
               <CollapseRadio
                 initialState={false}
