@@ -18,7 +18,7 @@ const Routes = props => {
       <Layout>
         <Route path="/user/dashboard" exact component={Auth(Dashboard, true)} />
         <Route
-          path="/admin/add_product"
+          path="/admin/add-product"
           exact
           component={Auth(AddProduct, true)}
         />

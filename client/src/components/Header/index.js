@@ -37,7 +37,7 @@ class Header extends Component {
     user: [
       {
         name: 'Home',
-        linkTo: '/home',
+        linkTo: '/',
         public: true
       },
       {
@@ -101,7 +101,7 @@ class Header extends Component {
 
   logoutHandler = async () => {
     await this.props.dispatch(logoutUser());
-    this.props.history.push('/home');
+    this.props.history.push('/');
   };
 
   render() {

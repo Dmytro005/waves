@@ -31,7 +31,6 @@ export default function(ComposedClass, reload, adminRoute) {
           this.props.history.push('/user/dashboard');
         } else {
           // if (reload) {
-          //   console.log('push');
           //   this.props.history.push('/user/dashboard');
           // }
         }

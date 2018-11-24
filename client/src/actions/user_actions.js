@@ -1,6 +1,7 @@
 import axios from 'utils/axios';
 
 import { USER_SERVER } from 'utils/misc';
+import { deleteCookie } from 'utils/cookies';
 
 import { LOGIN_USER, REGISTER_USER, AUTH_USER, LOGOUT_USER } from './types';
 
@@ -38,6 +39,9 @@ export async function logoutUser(dataToSubmit) {
   const { data: payload } = await axios
     .get(`${USER_SERVER}/logout`)
     .catch(({ response: { data } }) => ({ data }));
+
+  deleteCookie('w_auth');
+
   return {
     type: LOGOUT_USER,
     payload

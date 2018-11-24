@@ -1,6 +1,13 @@
 import React from 'react';
 
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  };
+};
 
 const links = [
   {
@@ -17,6 +24,21 @@ const links = [
   }
 ];
 
+const admin = [
+  {
+    name: 'Site info',
+    linkTo: '/admin/site-info'
+  },
+  {
+    name: 'Add product',
+    linkTo: '/admin/add-product'
+  },
+  {
+    name: 'Manage categories',
+    linkTo: '/admin/manage-categories'
+  }
+];
+
 const App = props => {
   const generateLinks = links => {
     return links.map((item, i) => (
@@ -25,13 +47,18 @@ const App = props => {
       </Link>
     ));
   };
-
   return (
     <div className="container">
       <div className="user_container">
         <div className="user_left_nav">
           <h2>Menu</h2>
           <div className="links">{generateLinks(links)}</div>
+          {props.user.isAdmin ? (
+            <div>
+              <h2>Admin</h2>
+              <div className="links">{generateLinks(admin)}</div>
+            </div>
+          ) : null}
         </div>
         <div className="user_right">{props.children}</div>
       </div>
@@ -39,4 +66,4 @@ const App = props => {
   );
 };
 
-export default App;
+export default connect(mapStateToProps)(App);
