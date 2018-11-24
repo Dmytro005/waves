@@ -36,7 +36,7 @@ class Shop extends Component {
     const { limit, skip, filters } = this.state;
     await this.props.dispatch(getBrands());
     await this.props.dispatch(getWoods());
-    await this.props.dispatch(getProductsToShop(limit, skip, filters));
+    await this.props.dispatch(getProductsToShop(skip, limit, filters));
   }
 
   handleFilters = (filters, category) => {
@@ -56,6 +56,24 @@ class Shop extends Component {
     this.setState({
       skip: 0
     });
+  };
+
+  loadMoreCards = () => {
+    let skip = this.state.skip + this.state.limit;
+    this.props
+      .dispatch(
+        getProductsToShop(
+          skip,
+          this.state.limit,
+          this.state.filters,
+          this.props.products.toShop
+        )
+      )
+      .then(() => {
+        this.setState({
+          skip
+        });
+      });
   };
 
   render() {
@@ -100,6 +118,7 @@ class Shop extends Component {
                   limit={this.state.limit}
                   size={this.props.products.toShopSize}
                   products={this.props.products.toShop}
+                  laodMore={() => this.loadMoreCards()}
                 />
               </div>
             </div>

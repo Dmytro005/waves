@@ -52,7 +52,7 @@ export async function getProductsToShop(
   skip,
   limit,
   filters = [],
-  previoState = []
+  previousState = []
 ) {
   const data = {
     skip,
@@ -66,6 +66,6 @@ export async function getProductsToShop(
 
   return {
     type: types.GET_PRODUCTS_TO_SHOP,
-    payload: { size, articles }
+    payload: { size, articles: [...previousState, ...articles] }
   };
 }

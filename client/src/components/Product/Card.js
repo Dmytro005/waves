@@ -12,7 +12,6 @@ class Card extends Component {
 
   render() {
     const { props } = this;
-    console.log(props);
 
     return (
       <div className={`card_item_wrapper ${props.grid}`}>
