@@ -1,11 +1,11 @@
 import React from 'react';
 
 import Button from 'components/Button';
-import App from 'hoc/App';
+import User from 'hoc/User';
 
 const Dashboard = ({ user }) => {
   return (
-    <App>
+    <User>
       <div>
         <div className="user_nfo_panel">
           <h1>User information</h1>
@@ -25,7 +25,7 @@ const Dashboard = ({ user }) => {
           <div className="user_product_block_wrapper">history</div>
         </div>
       </div>
-    </App>
+    </User>
   );
 };
 
