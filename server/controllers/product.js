@@ -130,7 +130,7 @@ router.post('/shop', async (req, res) => {
     let limit = parseInt(req.body.limit, 10) || 10;
     let skip = parseInt(req.body.skip, 10) || 0;
     let { filters } = req.body;
-    let findArgs = {};
+    let findArgs = { publish: true };
 
     for (let key in filters) {
       if (filters[key].length > 0) {
