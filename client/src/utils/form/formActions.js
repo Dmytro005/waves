@@ -55,6 +55,46 @@ export const submit = formData => {
     data: formIsValid ? dataToSubmit : invalidFields
   };
 };
+/**
+ *
+ * @param {Object} formData Object of form
+ * @param {Array} data data that would be populated to options
+ * @param {String} field field name of select with options
+ *
+ * @returns {Object}
+ */
+export const populateOptionFields = (formData, data = [], field) => {
+  const options = [];
+  const newFormData = { ...formData };
+
+  data.forEach(element => {
+    options.push({
+      key: element._id,
+      value: element.name
+    });
+  });
+
+  newFormData[field].config.options = options;
+
+  return newFormData;
+};
+
+/**
+ *
+ * @param {Object} formData
+ */
+export const clearFields = formData => {
+  const newFormData = { ...formData };
+
+  for (let key in newFormData) {
+    newFormData[key].value = '';
+    newFormData[key].valid = false;
+    newFormData[key].touched = false;
+    newFormData[key].validationMessage = '';
+  }
+
+  return newFormData;
+};
 
 /**
  * Form data object example

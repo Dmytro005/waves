@@ -51,7 +51,7 @@ export const validateField = (element, formData) => {
 };
 
 /**
- * Triggers inputs blur event to show ther errors
+ * Triggers inputs blur event to show their errors
  * @param {Array} fields Array of invalid fields names
  * example
   ["email_input", "password_input"]
@@ -59,8 +59,9 @@ export const validateField = (element, formData) => {
 export const triggerInvalidFields = fields => {
   const l = fields.length;
   async function findAndEmmit(fieldName) {
-    const input = await document.querySelector(`input[name="${fieldName}"]`);
-    input.dispatchEvent(new Event('blur'));
+    const element = await document.querySelector(`[name="${fieldName}"]`);
+    console.log(fieldName, element);
+    element.dispatchEvent(new Event('blur'));
   }
 
   for (let index = 0; index < l; index++) {

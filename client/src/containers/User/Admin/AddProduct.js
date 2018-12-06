@@ -4,15 +4,17 @@ import { connect } from 'react-redux';
 import User from 'hoc/User';
 
 import FormField from 'components/FormField';
-import { update, submit } from 'utils/form/formActions';
+import {
+  update,
+  submit,
+  populateOptionFields,
+  clearFields
+} from 'utils/form/formActions';
+import { frets } from 'utils/form/fixedCategories';
 import { triggerInvalidFields } from 'utils/form/formValidations';
 import Button from 'components/Button';
 
-import {
-  getBrands,
-  getWoods,
-  getProductsToShop
-} from 'actions/products_actions';
+import { getBrands, getWoods, addProduct } from 'actions/products_actions';
 
 const mapStateToProps = state => {
   return {
@@ -22,7 +24,7 @@ const mapStateToProps = state => {
 
 class AddProduct extends Component {
   state = {
-    formError: null,
+    formError: true,
     formSuccess: null,
     loading: false,
     formData: {
@@ -163,7 +165,7 @@ class AddProduct extends Component {
         element: 'select',
         value: '',
         config: {
-          label: 'Frets material',
+          label: 'Frets',
           name: 'frets_input',
           options: []
         },
@@ -203,6 +205,36 @@ class AddProduct extends Component {
     }
   };
 
+  async componentWillMount() {
+    const formData = this.state.formData;
+
+    await this.props.dispatch(getBrands()).then(() => {
+      const newformData = populateOptionFields(
+        formData,
+        this.props.products.brands,
+        'brand'
+      );
+      this.updateFormData(newformData);
+    });
+
+    await this.props.dispatch(getWoods()).then(() => {
+      const newformData = populateOptionFields(
+        formData,
+        this.props.products.woods,
+        'wood'
+      );
+      this.updateFormData(newformData);
+    });
+
+    const newformData = populateOptionFields(formData, frets, 'frets');
+    this.updateFormData(newformData);
+  }
+
+  updateFormData(formData) {
+    this.setState({
+      formData
+    });
+  }
   updateForm(element) {
     const newFormData = update(element, this.state.formData, 'AddProduct');
     this.setState({
@@ -212,19 +244,28 @@ class AddProduct extends Component {
 
   submitForm = async event => {
     event.preventDefault();
-    this.setState({ formError: null });
+    this.setState({ formError: false });
     const { formIsValid, data } = submit(this.state.formData);
+    console.log(this.state.formError);
     if (formIsValid) {
-      // await this.props.dispatch(loginUser(data));
-      if (this.props.user.loginSuccess) {
-        // this.props.history.push('/user/dashboard');
+      const response = await addProduct(data);
+
+      if (response.success) {
+        this.setState({ formSuccess: true });
+        this.setState({
+          formData: clearFields(this.state.formData)
+        });
+        setTimeout(() => {
+          this.setState({ formSuccess: false });
+        }, 3000);
       } else {
         this.setState({
-          formError: this.props.user.message
+          formError: response.data.error
         });
       }
     } else {
       triggerInvalidFields(data);
+      this.setState({ formError: 'Form validation failed' });
     }
   };
 
@@ -299,17 +340,12 @@ class AddProduct extends Component {
                 type="button"
                 onClick={e => this.submitForm(e)}
                 title="Add product"
-                addStyles={{
-                  marginTop: '20px'
-                }}
               />
 
-              {this.state.formError ? (
-                <div className="form_success">Products was added</div>
-              ) : null}
-
               {this.state.formSuccess ? (
-                <div className="error_label">{this.state.formError}</div>
+                <div className="form_success">
+                  Product was successfuly added
+                </div>
               ) : null}
 
               {this.state.formError ? (

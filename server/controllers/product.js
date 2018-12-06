@@ -66,7 +66,7 @@ router.get('/woods', async (req, res) => {
 router.post('/article', auth, admin, async (req, res) => {
   try {
     return res.status(200).json({
-      brands: await Product.create(req.body),
+      article: await Product.create({ ...req.body, sold: false }),
       success: true
     });
   } catch ({ message }) {

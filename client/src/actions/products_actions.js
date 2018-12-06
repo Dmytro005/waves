@@ -69,3 +69,10 @@ export async function getProductsToShop(
     payload: { size, articles: [...previousState, ...articles] }
   };
 }
+
+export async function addProduct(data) {
+  return await axios
+    .post(`${PRODUCT_SERVER}/article`, data)
+    .then(response => response.data)
+    .catch(({ response: { data } }) => ({ data }));
+}
