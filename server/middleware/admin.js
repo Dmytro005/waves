@@ -1,4 +1,4 @@
-let admin = async (req, res, next) => {
+const admin = async (req, res, next) => {
   try {
     if (req.user.role === 0) {
       throw new Error("You don't have enougn rights to perform this action");

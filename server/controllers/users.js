@@ -4,6 +4,11 @@ const express = require('express'),
 const { User } = require('../models/user');
 
 const { auth } = require('../middleware/auth');
+const { admin } = require('../middleware/admin');
+
+const formidable = require('express-formidable');
+
+const cloudinary = require('../config/cloudinary');
 
 router.get('/auth', auth, async (req, res) => {
   const { token, password, ...data } = req.user;
@@ -87,6 +92,33 @@ router.get('/logout', auth, async (req, res) => {
     console.error(error);
     return res.status(400).json({
       logoutSuccess: false,
+      error
+    });
+  }
+});
+
+router.post('/upload-image', auth, admin, formidable(), (req, res) => {
+  try {
+    cloudinary.uploader.upload(
+      req.files.file.path,
+
+      result => {
+        return res.status(200).json({
+          public_id: result.public_id,
+          url: result.url,
+          uploadSuccess: true
+        });
+      },
+
+      {
+        public_id: `${Date.now()}`,
+        resource_type: 'auto'
+      }
+    );
+  } catch (error) {
+    console.error(error);
+    return res.status(400).json({
+      uploadSuccess: false,
       error
     });
   }
