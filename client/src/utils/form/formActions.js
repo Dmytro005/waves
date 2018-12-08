@@ -83,11 +83,16 @@ export const populateOptionFields = (formData, data = [], field) => {
  *
  * @param {Object} formData
  */
-export const clearFields = formData => {
+export const clearFields = (formData, formType) => {
   const newFormData = { ...formData };
 
   for (let key in newFormData) {
-    newFormData[key].value = '';
+    if (formType === 'AddProduct' && newFormData[key] === 'images') {
+      newFormData[key].value = [];
+    } else {
+      newFormData[key].value = '';
+    }
+
     newFormData[key].valid = false;
     newFormData[key].touched = false;
     newFormData[key].validationMessage = '';

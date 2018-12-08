@@ -205,9 +205,13 @@ class AddProduct extends Component {
         showLabel: true
       },
       images: {
+        element: 'fileUpload',
         value: [],
         validation: {
           required: true
+        },
+        config: {
+          name: 'upload_file'
         },
         valid: false,
         touched: false,
@@ -258,14 +262,13 @@ class AddProduct extends Component {
     event.preventDefault();
     this.setState({ formError: false });
     const { formIsValid, data } = submit(this.state.formData);
-    console.log(this.state.formError);
     if (formIsValid) {
       const response = await addProduct(data);
 
       if (response.success) {
         this.setState({ formSuccess: true });
         this.setState({
-          formData: clearFields(this.state.formData)
+          formData: clearFields(this.state.formData, 'AddProduct')
         });
         setTimeout(() => {
           this.setState({ formSuccess: false });
@@ -281,7 +284,18 @@ class AddProduct extends Component {
     }
   };
 
-  imagesHandler(images) {}
+  imagesHandler(images) {
+    const newFormData = {
+      ...this.state.formData
+    };
+
+    newFormData['images'].value = images;
+    newFormData['images'].valid = true;
+
+    this.setState({
+      formData: newFormData
+    });
+  }
 
   render() {
     return (

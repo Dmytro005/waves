@@ -16,7 +16,50 @@ class FileUpload extends Component {
     };
   }
 
-  showUploadedImages(files) {}
+  static getDerivedStateFromProps(props, state) {
+    if (props.reset) {
+      return (state = {
+        uploadedFiles: []
+      });
+    }
+    return null;
+  }
+
+  showUploadedImages() {
+    return this.state.uploadedFiles.map(image => (
+      <div
+        className="dropzone_box"
+        key={image.public_id}
+        onClick={() => this.onRemoveHandler(image.public_id)}
+      >
+        <div
+          className="wrap"
+          style={{
+            background: `url(${image.url}) no-repeat `
+          }}
+        />
+      </div>
+    ));
+  }
+
+  async onRemoveHandler(public_id) {
+    await axios.delete('/api/users/image/unlink', {
+      data: { public_id }
+    });
+
+    const images = this.state.uploadedFiles.filter(
+      image => image.public_id !== public_id
+    );
+
+    this.setState(
+      {
+        uploadedFiles: images
+      },
+      () => {
+        this.props.imagesHandler(images);
+      }
+    );
+  }
 
   onDropHandler(files) {
     this.setState({ uploading: true });
@@ -26,7 +69,7 @@ class FileUpload extends Component {
     };
     formData.append('file', files[0]);
 
-    axios.post('/api/users/upload-image', formData, config).then(response => {
+    axios.post('/api/users/image/upload', formData, config).then(response => {
       this.setState(
         {
           uploading: false,

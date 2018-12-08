@@ -19,30 +19,30 @@ const EMAIL_REGEX_PATTERN = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
     touched: false,
     validationMessage: ''
  */
-export const validateField = (element, formData) => {
+export const validateField = (field, formData) => {
   let err = [true, ''];
 
-  if (element.validation.email) {
-    const valid = EMAIL_REGEX_PATTERN.test(element.value);
+  if (field.validation.email) {
+    const valid = EMAIL_REGEX_PATTERN.test(field.value);
     const message = `${!valid ? 'Enter the valid email' : ''}`;
     err = !valid ? [valid, message] : err;
   }
 
-  if (element.validation.password) {
-    const valid = element.value.length >= 5;
+  if (field.validation.password) {
+    const valid = field.value.length >= 5;
     const message = `${!valid ? 'This field must be greater than 5' : ''}`;
     err = !valid ? [valid, message] : err;
   }
 
-  if (element.validation.required) {
-    const valid = element.value.trim() !== '';
+  if (field.validation.required) {
+    const valid = field.value.trim() !== '';
     const message = `${!valid ? 'This field is required' : ''}`;
     err = !valid ? [valid, message] : err;
   }
 
-  if (element.validation.sameAs) {
+  if (field.validation.sameAs) {
     const valid =
-      element.value.trim() === formData[element.validation.sameAs].value;
+      field.value.trim() === formData[field.validation.sameAs].value;
     const message = `${!valid ? 'Passwords dosent match' : ''}`;
     err = !valid ? [valid, message] : err;
   }
@@ -60,11 +60,12 @@ export const triggerInvalidFields = fields => {
   const l = fields.length;
   async function findAndEmmit(fieldName) {
     const element = await document.querySelector(`[name="${fieldName}"]`);
-    console.log(fieldName, element);
     element.dispatchEvent(new Event('blur'));
   }
 
   for (let index = 0; index < l; index++) {
-    findAndEmmit(fields[index]);
+    if (fields[index] !== 'upload_file') {
+      findAndEmmit(fields[index]);
+    }
   }
 };
