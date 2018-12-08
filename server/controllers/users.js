@@ -97,7 +97,7 @@ router.get('/logout', auth, async (req, res) => {
   }
 });
 
-router.post('/upload-image', auth, admin, formidable(), (req, res) => {
+router.post('/image/upload', auth, admin, formidable(), (req, res) => {
   try {
     cloudinary.uploader.upload(
       req.files.file.path,
@@ -105,8 +105,7 @@ router.post('/upload-image', auth, admin, formidable(), (req, res) => {
       result => {
         return res.status(200).json({
           public_id: result.public_id,
-          url: result.url,
-          uploadSuccess: true
+          url: result.url
         });
       },
 
@@ -120,6 +119,24 @@ router.post('/upload-image', auth, admin, formidable(), (req, res) => {
     return res.status(400).json({
       uploadSuccess: false,
       error
+    });
+  }
+});
+
+router.delete('/image/unlink', auth, admin, (req, res) => {
+  try {
+    const { public_id } = req.body;
+    cloudinary.uploader.destroy(public_id, error => {
+      return res.status(200).json({
+        unlinkSuccess: true
+      });
+    });
+    return res.status(200);
+  } catch (error) {
+    console.error(error);
+    return res.status(400).json({
+      unlinkSuccess: false,
+      error: error.message
     });
   }
 });
