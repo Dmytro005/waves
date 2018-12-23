@@ -12,6 +12,8 @@ import Shop from './containers/Shop';
 import Dashboard from './containers/User';
 import AddProduct from './containers/User/Admin/AddProduct';
 
+import ManageCategories from './containers/User/Admin/ManageCategories';
+
 const Routes = props => {
   return (
     <Switch>
@@ -22,6 +24,8 @@ const Routes = props => {
           exact
           component={Auth(AddProduct, true)}
         />
+        <Route path="/admin/manage-categories" exact component={Auth(ManageCategories,true)}/>
+
         <Route
           path="/register_login"
           exact

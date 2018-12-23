@@ -76,3 +76,35 @@ export async function addProduct(data) {
     .then(response => response.data)
     .catch(({ response: { data } }) => ({ data }));
 }
+
+export function addBrand(dataToSubmit, existingBrands) {
+  const request = axios
+    .post(`${PRODUCT_SERVER}/brand`, dataToSubmit)
+    .then(response => {
+      let brands = [...existingBrands, response.data.brand];
+      return {
+        success: response.data.success,
+        brands
+      };
+    });
+  return {
+    type: types.ADD_BRAND,
+    payload: request
+  };
+}
+
+export function addWood(dataToSubmit, existingWoods) {
+  const request = axios
+    .post(`${PRODUCT_SERVER}/wood`, dataToSubmit)
+    .then(response => {
+      let woods = [...existingWoods, response.data.wood];
+      return {
+        success: response.data.success,
+        woods
+      };
+    });
+  return {
+    type: types.ADD_WOOD,
+    payload: request
+  };
+}
