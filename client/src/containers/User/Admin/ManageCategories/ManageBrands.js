@@ -70,7 +70,7 @@ class ManageBrands extends Component {
       this.props.dispatch(addBrand(data, existingBrands)).then(response => {
         if (response.payload.success) {
           this.setState({
-            formData: clearFields(this.state.formData, 'AddProduct')
+            formData: clearFields(this.state.formData, 'AddBrand')
           });
         } else {
           this.setState({ formError: true });
