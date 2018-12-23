@@ -108,3 +108,21 @@ export function addWood(dataToSubmit, existingWoods) {
     payload: request
   };
 }
+
+export async function getProductDetails(id) {
+  const { data: payload } = await axios
+    .get(`${PRODUCT_SERVER}/article_by_id?id=${id}&type=single`)
+    .catch(({ response: { data } }) => ({ data }));
+
+  return {
+    type: types.GET_PRODUCT_DETAILS,
+    payload: payload.articles[0]
+  };
+}
+
+export async function clearProductDetails() {
+  return {
+    type: types.CLEAR_PRODUCT_DETAILS,
+    payload: ''
+  };
+}

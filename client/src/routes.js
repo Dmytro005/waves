@@ -11,8 +11,8 @@ import Shop from './containers/Shop';
 
 import Dashboard from './containers/User';
 import AddProduct from './containers/User/Admin/AddProduct';
-
 import ManageCategories from './containers/User/Admin/ManageCategories';
+import ProductsPage from './containers/ProductPage';
 
 const Routes = props => {
   return (
@@ -24,13 +24,20 @@ const Routes = props => {
           exact
           component={Auth(AddProduct, true)}
         />
-        <Route path="/admin/manage-categories" exact component={Auth(ManageCategories,true)}/>
+        <Route
+          path="/admin/manage-categories"
+          exact
+          component={Auth(ManageCategories, true)}
+        />
 
         <Route
           path="/register_login"
           exact
           component={Auth(RegisterLogin, false)}
         />
+
+        <Route path="/product/:id" exact component={Auth(ProductsPage, null)} />
+
         <Route path="/register" exact component={Auth(Register, false)} />
         <Route path="/shop" exact component={Auth(Shop, null)} />
         <Route path="/" exact component={Auth(Home, null)} />

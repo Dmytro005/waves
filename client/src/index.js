@@ -23,7 +23,7 @@ const App = () => {
           window.__REDUX_DEVTOOLS_EXTENSION__()
       )}
     >
-      <BrowserRouter>
+      <BrowserRouter onUpdate={() => alert('ddd')}>
         <Routes />
       </BrowserRouter>
     </Provider>

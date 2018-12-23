@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import faShoppingBag from '@fortawesome/fontawesome-free-solid/faShoppingBag';
+
 const Button = props => {
   const buttons = () => {
     let template = null;
@@ -22,6 +25,14 @@ const Button = props => {
           >
             {props.title}
           </button>
+        );
+        break;
+      case 'add_to_cart_link':
+        template = (
+          <div className="add_to_cart_link" onClick={props.runAction()}>
+            <FontAwesomeIcon icon={faShoppingBag} />
+            Add to cart
+          </div>
         );
         break;
       default:
