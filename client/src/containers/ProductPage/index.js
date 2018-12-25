@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import PageTop from 'components/Header/ShopHeader';
 import ProductInfo from 'components/Product/ProductInfo';
+import ProductImage from 'components/Product/ProductImage';
 
 import { connect } from 'react-redux';
 
@@ -35,7 +36,9 @@ class ProductPage extends Component {
         <div className="container">
           {this.props.products.prodDetails ? (
             <div className="product_detail_wrapper">
-              <div className="left">ssss</div>
+              <div className="left">
+                <ProductImage detail={this.props.products.prodDetails} />
+              </div>
               <div className="right">
                 <ProductInfo
                   addToCard={() => this.addToCardHandler()}

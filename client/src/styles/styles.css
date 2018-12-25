@@ -684,6 +684,7 @@ footer .business_nfo .nfo {
 .product_detail_wrapper .main_pic div {
   width: 100%;
   height: 446px;
+  width: 446px;
   border: 1px solid #d9d9d9;
   background-size: contain !important;
   background-position: center center !important;
