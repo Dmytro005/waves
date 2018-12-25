@@ -20,7 +20,11 @@ const mapStateToProps = state => {
 class ProductPage extends Component {
   async componentDidMount() {
     const productId = this.props.match.params.id;
-    await this.props.dispatch(getProductDetails(productId));
+    await this.props.dispatch(getProductDetails(productId)).catch(() => {
+      if (!this.props.products.prodDetails) {
+        this.props.history.push('/');
+      }
+    });
   }
 
   componentWillUnmount() {
