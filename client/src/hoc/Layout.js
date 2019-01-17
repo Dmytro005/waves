@@ -4,6 +4,12 @@ import Header from 'components/Header';
 import Footer from 'components/Footer';
 
 class Layout extends Component {
+  componentDidUpdate(prevProps) {
+    if (this.props.location !== prevProps.location) {
+      window.scrollTo(0, 0);
+    }
+  }
+
   render() {
     return (
       <div>
