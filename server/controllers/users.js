@@ -6,6 +6,8 @@ const { User } = require('../models/user');
 const { auth } = require('../middleware/auth');
 const { admin } = require('../middleware/admin');
 
+const mongoose = require('mongoose');
+
 const formidable = require('express-formidable');
 
 const cloudinary = require('../config/cloudinary');
@@ -132,6 +134,47 @@ router.delete('/image/unlink', auth, admin, (req, res) => {
       });
     });
     return res.status(200);
+  } catch (error) {
+    console.error(error);
+    return res.status(400).json({
+      unlinkSuccess: false,
+      error: error.message
+    });
+  }
+});
+
+router.post('/addToCart', auth, (req, res) => {
+  try {
+    User.findById(req.user._id, (err, doc) => {
+      let dublicate = false;
+
+      doc.cart.forEach(item => {
+        // Check if user have dublicated item in the cart
+        if (item.id == req.query.productId) {
+          dublicate = true;
+        }
+      });
+      if (dublicate) {
+      } else {
+        User.findByIdAndUpdate(
+          { _id: req.user._id },
+          {
+            $push: {
+              cart: {
+                id: mongoose.Types.ObjectId(req.query.productId),
+                quantity: 1,
+                date: Date.now()
+              }
+            }
+          },
+          { new: true },
+          function(err, doc) {
+            if (err) return res.json({ success: false, err });
+            res.status(200).json(doc.cart);
+          }
+        );
+      }
+    });
   } catch (error) {
     console.error(error);
     return res.status(400).json({

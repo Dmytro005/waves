@@ -15,3 +15,5 @@ export const ADD_WOOD = 'add_wood';
 
 export const GET_BRANDS = 'get_brands';
 export const ADD_BRAND = 'add_brand';
+
+export const ADD_TO_CART_USER = 'add_to_cart_user';

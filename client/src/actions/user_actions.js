@@ -3,7 +3,13 @@ import axios from 'utils/axios';
 import { USER_SERVER } from 'utils/misc';
 import { deleteCookie } from 'utils/cookies';
 
-import { LOGIN_USER, REGISTER_USER, AUTH_USER, LOGOUT_USER } from './types';
+import {
+  LOGIN_USER,
+  REGISTER_USER,
+  AUTH_USER,
+  LOGOUT_USER,
+  ADD_TO_CART_USER
+} from './types';
 
 export async function loginUser(dataToSubmit) {
   const { data: payload } = await axios
@@ -44,6 +50,17 @@ export async function logoutUser(dataToSubmit) {
 
   return {
     type: LOGOUT_USER,
+    payload
+  };
+}
+
+export async function addToCart(_id) {
+  const { data: payload } = await axios
+    .post(`${USER_SERVER}/addToCart?productId=${_id}`)
+    .catch(({ response: { data } }) => ({ data }));
+
+  return {
+    type: ADD_TO_CART_USER,
     payload
   };
 }
