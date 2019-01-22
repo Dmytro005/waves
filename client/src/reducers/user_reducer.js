@@ -1,19 +1,20 @@
-import { LOGIN_USER, REGISTER_USER, AUTH_USER } from 'actions/types';
-import { LOGOUT_USER, ADD_TO_CART_USER } from '../actions/types';
+import * as actions from 'actions/types';
 
 const nameInitialState = {};
 
 export default function(state = nameInitialState, action) {
   switch (action.type) {
-    case REGISTER_USER:
+    case actions.REGISTER_USER:
       return { ...state, ...action.payload };
-    case LOGIN_USER:
+    case actions.LOGIN_USER:
       return { ...state, ...action.payload };
-    case AUTH_USER:
+    case actions.AUTH_USER:
       return { ...state, ...action.payload };
-    case ADD_TO_CART_USER:
+    case actions.ADD_TO_CART_USER:
       return { ...state, cart: action.payload };
-    case LOGOUT_USER:
+    case actions.GET_CART_ITEMS:
+      return { ...state, cartDetail: action.payload };
+    case actions.LOGOUT_USER:
       return {};
     default:
       return state;

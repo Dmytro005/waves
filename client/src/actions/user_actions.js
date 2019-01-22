@@ -1,22 +1,16 @@
 import axios from 'utils/axios';
 
-import { USER_SERVER } from 'utils/misc';
+import { USER_SERVER, PRODUCT_SERVER } from 'utils/misc';
 import { deleteCookie } from 'utils/cookies';
 
-import {
-  LOGIN_USER,
-  REGISTER_USER,
-  AUTH_USER,
-  LOGOUT_USER,
-  ADD_TO_CART_USER
-} from './types';
+import * as actions from 'actions/types';
 
 export async function loginUser(dataToSubmit) {
   const { data: payload } = await axios
     .post(`${USER_SERVER}/login`, dataToSubmit)
     .catch(({ response: { data } }) => ({ data }));
   return {
-    type: LOGIN_USER,
+    type: actions.LOGIN_USER,
     payload
   };
 }
@@ -26,7 +20,7 @@ export async function registerUser(dataToSubmit) {
     .post(`${USER_SERVER}/register`, dataToSubmit)
     .catch(({ response: { data } }) => ({ data }));
   return {
-    type: REGISTER_USER,
+    type: actions.REGISTER_USER,
     payload
   };
 }
@@ -36,7 +30,7 @@ export async function authUser(dataToSubmit) {
     .get(`${USER_SERVER}/auth`)
     .catch(({ response: { data } }) => ({ data }));
   return {
-    type: AUTH_USER,
+    type: actions.AUTH_USER,
     payload
   };
 }
@@ -49,7 +43,7 @@ export async function logoutUser(dataToSubmit) {
   deleteCookie('w_auth');
 
   return {
-    type: LOGOUT_USER,
+    type: actions.LOGOUT_USER,
     payload
   };
 }
@@ -60,7 +54,27 @@ export async function addToCart(_id) {
     .catch(({ response: { data } }) => ({ data }));
 
   return {
-    type: ADD_TO_CART_USER,
+    type: actions.ADD_TO_CART_USER,
     payload
+  };
+}
+
+export async function getCartItems(cartItems, userCart) {
+  console.log();
+
+  const { data: payload } = await axios
+    .get(`${PRODUCT_SERVER}/article_by_id?id=${cartItems}&type=array`)
+    .catch(({ response: { data } }) => ({ data }));
+
+  let cartDetails = payload.articles.map(article => {
+    let { quantity } = userCart.find(({ id }) => article._id);
+    return { ...article, quantity };
+  });
+
+  console.log(cartDetails);
+
+  return {
+    type: actions.GET_CART_ITEMS,
+    payload: cartDetails
   };
 }

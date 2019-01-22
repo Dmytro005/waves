@@ -68,7 +68,11 @@ const ProductInfo = props => {
       <div className="cart">
         <Button
           type="add_to_cart_link"
-          runAction={() => addToCartHandle(details._id)}
+          runAction={() =>
+            props.user && props.user.isAuthed
+              ? addToCartHandle(detail._id)
+              : alert('You need to log in')
+          }
         />
       </div>
     </div>

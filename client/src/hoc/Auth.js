@@ -12,7 +12,7 @@ export default function(ComposedClass, reload, adminRoute) {
 
   class Auth extends Component {
     state = {
-      loading: false
+      loading: true
     };
 
     async componentDidMount() {
@@ -24,6 +24,7 @@ export default function(ComposedClass, reload, adminRoute) {
       if (document.cookie.split('=')[0] === 'w_auth') {
         await this.props.dispatch(authUser());
         user = this.props.user;
+        this.setState({ loading: false });
       }
 
       if (user.isAuthed) {
