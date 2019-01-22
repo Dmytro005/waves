@@ -52,7 +52,8 @@ class Card extends Component {
                 title="View product"
                 linkTo={`/product/${props._id}`}
                 addStyles={{
-                  margin: '10px 0 0 0'
+                  margin: '10px 0 0 0',
+                  width: '100%'
                 }}
               />
             </div>
@@ -62,7 +63,7 @@ class Card extends Component {
                 runAction={() =>
                   props.user && props.user.isAuthed
                     ? props.dispatch(addToCart(props._id))
-                    : console.log('You need to log in')
+                    : alert('You need to log in')
                 }
               />
             </div>

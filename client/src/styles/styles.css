@@ -890,9 +890,3 @@ footer .business_nfo .nfo {
 .c-p {
   cursor: pointer;
 }
-
-.button_wrapp {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}

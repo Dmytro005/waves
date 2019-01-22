@@ -154,7 +154,24 @@ router.post('/addToCart', auth, (req, res) => {
           dublicate = true;
         }
       });
+
       if (dublicate) {
+        User.findOneAndUpdate(
+          {
+            _id: req.user._id,
+            'cart.id': mongoose.Types.ObjectId(req.query.productId)
+          },
+          {
+            $inc: { 'cart.$.quantity': 1 }
+          },
+          {
+            new: true
+          },
+          (err, doc) => {
+            if (err) return res.json({ success: false, err });
+            res.status(200).json(doc.cart);
+          }
+        );
       } else {
         User.findByIdAndUpdate(
           { _id: req.user._id },

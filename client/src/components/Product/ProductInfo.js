@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import Button from 'components/Button';
 
@@ -7,6 +8,14 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import faTruck from '@fortawesome/fontawesome-free-solid/faTruck';
 import faCheck from '@fortawesome/fontawesome-free-solid/faCheck';
 import faTimes from '@fortawesome/fontawesome-free-solid/faTimes';
+
+import { addToCart } from 'actions/user_actions';
+
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  };
+};
 
 const ProductInfo = props => {
   const { details } = props;
@@ -49,15 +58,17 @@ const ProductInfo = props => {
     </div>
   );
 
+  const addToCartHandle = id => {
+    props.dispatch(addToCart(id));
+  };
+
   const showProdActions = detail => (
     <div className="product_actions">
       <div className="price">$ {detail.price}</div>
       <div className="cart">
         <Button
           type="add_to_cart_link"
-          runAction={() => {
-            console.log('add to cart');
-          }}
+          runAction={() => addToCartHandle(details._id)}
         />
       </div>
     </div>
@@ -88,4 +99,4 @@ const ProductInfo = props => {
   );
 };
 
-export default ProductInfo;
+export default connect(mapStateToProps)(ProductInfo);
