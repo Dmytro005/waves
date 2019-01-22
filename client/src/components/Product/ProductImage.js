@@ -26,7 +26,7 @@ class ProductImage extends Component {
     if (images.length > 0) {
       return images[0].url;
     } else {
-      return '/images/image_not_available.png';
+      return '/images/image_not_availble.png';
     }
   }
 

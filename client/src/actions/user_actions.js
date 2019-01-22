@@ -60,14 +60,12 @@ export async function addToCart(_id) {
 }
 
 export async function getCartItems(cartItems, userCart) {
-  console.log();
-
   const { data: payload } = await axios
     .get(`${PRODUCT_SERVER}/article_by_id?id=${cartItems}&type=array`)
     .catch(({ response: { data } }) => ({ data }));
 
   let cartDetails = payload.articles.map(article => {
-    let { quantity } = userCart.find(({ id }) => article._id);
+    let { quantity } = userCart.find(({ id }) => id === article._id);
     return { ...article, quantity };
   });
 

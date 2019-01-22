@@ -798,15 +798,16 @@ footer .business_nfo .nfo {
 }
 
 .user_product_block .item {
+  max-width: 195px;
   flex-grow: 1;
 }
 
 .user_product_block .item .image {
   height: 125px;
+  width: 125px;
   background-size: contain !important;
   background-repeat: no-repeat !important;
   background-position: center center !important;
-  margin-right: 10px;
 }
 .user_product_block .item.btn {
   width: 0px;

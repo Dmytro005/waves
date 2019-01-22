@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import UserLayout from 'hoc/User';
+import CartDetails from 'components/Product/CartDetails.js';
 
 import { getCartItems } from 'actions/user_actions';
 
@@ -29,20 +30,34 @@ class UserCart extends Component {
     if (user.cart && user.cart.length > 0) {
       let productIds = user.cart.reduce((acc, cartItem) => {
         acc.push(cartItem.id);
-        return acc
+        return acc;
       }, []);
 
       this.props.dispatch(getCartItems(productIds, user.cart));
     }
-
   }
 
+  removeFromCart = id => {
+    console.log('idto remove', id);
+  };
+
   render() {
-    return <UserLayout>
-      <div>
-      {this.props.user.lastName}
-      </div>
-      </UserLayout>;
+    return (
+      <UserLayout>
+        <div>
+          <h2>My cart</h2>
+          <div className="user_cart">
+            <CartDetails
+              products={this.props.user}
+              type="cart"
+              removeItem={id => {
+                this.removeFromCart(id);
+              }}
+            />
+          </div>
+        </div>
+      </UserLayout>
+    );
   }
 }
 
