@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "./node_modules/.bin/mocha tests",
     "start-server": "nodemon server/app.js --ignore client/ ",
     "start-client": "npm run --prefix client start",
     "dev": "concurrently -n api,ui,prettier \"  yarn run start-server  \"  \"  yarn run start-client  \"  \"  yarn run prettier  \"",

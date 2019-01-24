@@ -29,6 +29,7 @@ export default function(ComposedClass, reload, adminRoute) {
 
       if (user.isAuthed) {
         if (adminRoute && !user.isAdmin) {
+          this.setState({ loading: false });
           this.props.history.push('/user/dashboard');
         } else {
           // if (reload) {
@@ -37,9 +38,11 @@ export default function(ComposedClass, reload, adminRoute) {
         }
       } else {
         if (reload) {
+          this.setState({ loading: false });
           this.props.history.push('/register_login');
         }
       }
+      this.setState({ loading: false });
     }
 
     render() {
