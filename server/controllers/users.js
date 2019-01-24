@@ -2,6 +2,7 @@ const express = require('express'),
   router = express.Router();
 
 const { User } = require('../models/user');
+const { Product } = require('../models/product');
 
 const { auth } = require('../middleware/auth');
 const { admin } = require('../middleware/admin');
@@ -191,6 +192,46 @@ router.post('/addToCart', auth, (req, res) => {
           }
         );
       }
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(400).json({
+      unlinkSuccess: false,
+      error: error.message
+    });
+  }
+});
+
+router.get('/removeFromCart', auth, async (req, res) => {
+  try {
+    const doc = await User.findOneAndUpdate(
+      {
+        _id: req.user._id
+      },
+      {
+        $pull: {
+          cart: { id: mongoose.Types.ObjectId(req.query.id) }
+        }
+      },
+      {
+        new: true
+      }
+    );
+
+    let { cart } = doc.toObject();
+
+    let arr = cart.map(item => {
+      return mongoose.Types.ObjectId(item.id);
+    });
+
+    const cartDetail = await Product.find({ _id: { $in: arr } }).populate(
+      'brand wood'
+    );
+
+    return res.status(200).json({
+      cartDetail,
+      cart,
+      success: true
     });
   } catch (error) {
     console.error(error);

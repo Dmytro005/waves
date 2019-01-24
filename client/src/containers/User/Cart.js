@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import UserLayout from 'hoc/User';
 import CartDetails from 'components/Product/CartDetails.js';
 
-import { getCartItems } from 'actions/user_actions';
+import { getCartItems, removeCartItem } from 'actions/user_actions';
 
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import faFrown from '@fortawesome/fontawesome-free-solid/faFrown';
@@ -57,8 +57,13 @@ class UserCart extends Component {
     }
   }
 
-  removeFromCart = id => {
-    console.log('idto remove', id);
+  removeFromCart = async id => {
+    await this.props.dispatch(removeCartItem(id));
+    if (this.props.user.cartDetail.length === 0) {
+      this.setState({ showTotal: false });
+    } else {
+      this.calculateTotal(this.props.user.cartDetail);
+    }
   };
 
   render() {

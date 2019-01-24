@@ -60,7 +60,6 @@ export async function addToCart(_id) {
 }
 
 export async function getCartItems(cartItems, userCart) {
-
   const { data: payload } = await axios
     .get(`${PRODUCT_SERVER}/article_by_id?id=${cartItems}&type=array`)
     .catch(({ response: { data } }) => ({ data }));
@@ -73,5 +72,21 @@ export async function getCartItems(cartItems, userCart) {
   return {
     type: actions.GET_CART_ITEMS,
     payload: cartDetails
+  };
+}
+
+export async function removeCartItem(cartItemId) {
+  const { data: payload } = await axios
+    .get(`${USER_SERVER}/removeFromCart?id=${cartItemId}`)
+    .catch(({ response: { data } }) => ({ data }));
+
+  payload.cartDetail = payload.cartDetail.map(article => {
+    let { quantity } = payload.cart.find(({ id }) => id === article._id);
+    return { ...article, quantity };
+  });
+
+  return {
+    type: actions.REMOVE_CART_ITEM,
+    payload
   };
 }

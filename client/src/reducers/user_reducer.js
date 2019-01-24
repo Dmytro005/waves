@@ -14,6 +14,12 @@ export default function(state = nameInitialState, action) {
       return { ...state, cart: action.payload };
     case actions.GET_CART_ITEMS:
       return { ...state, cartDetail: action.payload };
+    case actions.REMOVE_CART_ITEM:
+      return {
+        ...state,
+        cartDetail: action.payload.cartDetail,
+        cart: action.payload.cart
+      };
     case actions.LOGOUT_USER:
       return {};
     default:
