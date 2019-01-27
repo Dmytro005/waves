@@ -8,14 +8,18 @@ import { getCartItems, removeCartItem } from 'actions/user_actions';
 
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import faFrown from '@fortawesome/fontawesome-free-solid/faFrown';
+
 import faSmile from '@fortawesome/fontawesome-free-solid/faSmile';
-import { array } from 'prop-types';
+
+import Paypal from 'components/Button/paypal';
 
 const mapStateToProps = state => {
   return {
     user: state.user
   };
 };
+
+//
 
 class UserCart extends Component {
   state = {
@@ -30,7 +34,6 @@ class UserCart extends Component {
       return (acc += product.price * product.quantity);
     }, 0);
     this.setState({ total, showTotal: true });
-    console.log(this.state.total);
   };
 
   showNoItemsMessage = () => (
@@ -66,6 +69,43 @@ class UserCart extends Component {
     }
   };
 
+  transactionError = data => {
+    console.log('Some error occured when processing your order: ', data);
+  };
+
+  transactionCancel = data => {
+    console.log('Transaction cancel');
+  };
+
+  transactionSuccess = data => {
+    /**
+     * Example success data response
+     * 
+      address: {
+        city: "Toronto",
+        country_code: "CA",
+        line1: "1 Maire-Victorin",
+        postal_code: "M5A 1E1",
+        recipient_name: "Business Admin",
+        state: "Ontario"
+      },
+      cancelled: false,
+      email: "BA@paypal.com",
+      paid: true,
+      payerID: "2QT2CD4XMVMNA",
+      paymentID: "PAYID-LRHBAEI26P193062U759074D",
+      paymentToken: "EC-3PW165827K288103M",
+      returnUrl: "https://www.paypal.com/checkoutnow/error?paymentId=PAYID-LRHBAEI26P193062U759074D&token=EC
+     */
+
+    this.setState({
+      showTotal: false,
+      showSuccess: true
+    });
+
+    console.log(data);
+  };
+
   render() {
     return (
       <UserLayout>
@@ -89,7 +129,7 @@ class UserCart extends Component {
             ) : this.state.showSuccess ? (
               <div>
                 <div className="cart_success">
-                  <FontAwesomeIcon icon={faFrown} />
+                  <FontAwesomeIcon icon={faSmile} />
                   <div>THANK YOU</div>
                   <div>YOUR ORDER IS NOW COMPLETED</div>
                 </div>
@@ -99,7 +139,14 @@ class UserCart extends Component {
             )}
 
             {this.state.showTotal ? (
-              <div className="paypal_button_conteiner">Paypal</div>
+              <div className="paypal_button_conteiner">
+                <Paypal
+                  toPay={this.state.total}
+                  transactionError={data => this.transactionError(data)}
+                  transactionCancel={data => this.transactionCancel(data)}
+                  transactionSuccess={data => this.transactionSuccess(data)}
+                />
+              </div>
             ) : null}
           </div>
         </div>

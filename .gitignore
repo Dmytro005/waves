@@ -21,3 +21,7 @@ yarn-error.log*
 
 #dbcash
 /.env
+
+/.idea
+
+/.vscode

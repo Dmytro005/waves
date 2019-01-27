@@ -12,6 +12,7 @@ import {
   populateOptionFields,
   clearFields
 } from 'utils/form/formActions';
+
 import { frets } from 'utils/form/fixedCategories';
 import { triggerInvalidFields } from 'utils/form/formValidations';
 import Button from 'components/Button';

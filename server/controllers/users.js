@@ -242,4 +242,14 @@ router.get('/removeFromCart', auth, async (req, res) => {
   }
 });
 
+router.get('/successBuy', auth, async (req, res) => {
+  try {
+  } catch (error) {
+    console.error(error);
+    return res.status(400).json({
+      error: error.message
+    });
+  }
+});
+
 module.exports = router;

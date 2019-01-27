@@ -27,7 +27,7 @@ const Footer = () => {
               <div className="tag">
                 <FontAwesomeIcon icon={faPhone} className="icon" />
                 <div className="nfo">
-                  <div>Phome</div>
+                  <div>Phone</div>
                   <div>123456789</div>
                 </div>
               </div>
