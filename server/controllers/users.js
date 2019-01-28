@@ -245,7 +245,7 @@ router.get('/removeFromCart', auth, async (req, res) => {
   }
 });
 
-router.get('/successBuy', auth, async (req, res) => {
+router.post('/successBuy', auth, async (req, res) => {
   try {
     // Push to user history
     let history = req.body.cartDetail.reduce(
@@ -257,7 +257,7 @@ router.get('/successBuy', auth, async (req, res) => {
           id: _id,
           price,
           quantity,
-          paymentId: req.body.paymentData.paymentId
+          paymentId: req.body.paymentData.paymentID
         });
         return acc;
       },
@@ -268,8 +268,8 @@ router.get('/successBuy', auth, async (req, res) => {
     let transactionData = {
       user: {
         id: req.user._id,
-        name: req.user.name,
-        lastname: req.user.lastname,
+        firstName: req.user.firstName,
+        lastName: req.user.lastName,
         email: req.user.email
       },
       data: req.body.paymentData,
@@ -286,10 +286,9 @@ router.get('/successBuy', auth, async (req, res) => {
       { new: true }
     );
 
-    user = user.toObject();
-
     // Create the following payment
-    const { _doc: payment } = new Payment(transactionData);
+    const payment = new Payment(transactionData);
+
     payment.save((err, doc) => {
       if (err) return res.status(400).json(err);
 
@@ -299,7 +298,7 @@ router.get('/successBuy', auth, async (req, res) => {
       }, []);
 
       // Update each product sold field
-      async.eachOfSeries(
+      async.eachSeries(
         products,
 
         (item, callback) => {

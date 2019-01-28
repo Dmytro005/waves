@@ -20,6 +20,13 @@ export default function(state = nameInitialState, action) {
         cartDetail: action.payload.cartDetail,
         cart: action.payload.cart
       };
+    case actions.ON_SUCCESS_BUY_USER:
+      return {
+        ...state,
+        successBuy: action.payload.success,
+        cart: action.payload.cart,
+        cartDetail: action.payload.cartDetail
+      };
     case actions.LOGOUT_USER:
       return {};
     default:

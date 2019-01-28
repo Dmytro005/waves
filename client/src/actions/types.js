@@ -17,5 +17,6 @@ export const GET_BRANDS = 'get_brands';
 export const ADD_BRAND = 'add_brand';
 
 export const ADD_TO_CART_USER = 'add_to_cart_user';
-export const GET_CART_ITEMS = 'get_cart_items';
-export const REMOVE_CART_ITEM = 'remove_cart_item';
+export const GET_CART_ITEMS = 'get_cart_items_user';
+export const REMOVE_CART_ITEM = 'remove_cart_item_user';
+export const ON_SUCCESS_BUY_USER = 'on_success_buy_user';

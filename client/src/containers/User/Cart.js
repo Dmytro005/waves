@@ -4,7 +4,11 @@ import { connect } from 'react-redux';
 import UserLayout from 'hoc/User';
 import CartDetails from 'components/Product/CartDetails.js';
 
-import { getCartItems, removeCartItem } from 'actions/user_actions';
+import {
+  getCartItems,
+  removeCartItem,
+  onSuccessBuy
+} from 'actions/user_actions';
 
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import faFrown from '@fortawesome/fontawesome-free-solid/faFrown';
@@ -77,33 +81,40 @@ class UserCart extends Component {
     console.log('Transaction cancel');
   };
 
-  transactionSuccess = data => {
-    /**
-     * Example success data response
-     * 
-      address: {
-        city: "Toronto",
-        country_code: "CA",
-        line1: "1 Maire-Victorin",
-        postal_code: "M5A 1E1",
-        recipient_name: "Business Admin",
-        state: "Ontario"
-      },
-      cancelled: false,
-      email: "BA@paypal.com",
-      paid: true,
-      payerID: "2QT2CD4XMVMNA",
-      paymentID: "PAYID-LRHBAEI26P193062U759074D",
-      paymentToken: "EC-3PW165827K288103M",
-      returnUrl: "https://www.paypal.com/checkoutnow/error?paymentId=PAYID-LRHBAEI26P193062U759074D&token=EC
-     */
+  transactionSuccess = async data => {
+    // Transaction moch data
+    // paymentData: {
+    //   address: {
+    //     city: 'Toronto',
+    //     country_code: 'CA',
+    //     line1: '1 Maire-Victorin',
+    //     postal_code: 'M5A 1E1',
+    //     recipient_name: 'Business Admin',
+    //     state: 'Ontario'
+    //   },
+    //   cancelled: false,
+    //   email: 'BA@paypal.com',
+    //   paid: true,
+    //   payerID: '2QT2CD4XMVMNA',
+    //   paymentID: 'PAYID-LRHBAEI26P193062U759074D',
+    //   paymentToken: 'EC-3PW165827K288103M',
+    //   returnUrl:
+    //     'https://www.paypal.com/checkoutnow/error?paymentId=PAYID-LRHBAEI26P193062U759074D&token=EC'
+    // }
 
-    this.setState({
-      showTotal: false,
-      showSuccess: true
-    });
+    await this.props.dispatch(
+      onSuccessBuy({
+        paymentData: data,
+        cartDetail: this.props.user.cartDetail
+      })
+    );
 
-    console.log(data);
+    if (this.props.user.successBuy) {
+      this.setState({
+        showTotal: false,
+        showSuccess: true
+      });
+    }
   };
 
   render() {

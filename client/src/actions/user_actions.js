@@ -90,3 +90,14 @@ export async function removeCartItem(cartItemId) {
     payload
   };
 }
+
+export async function onSuccessBuy(data) {
+  const { data: payload } = await axios
+    .post(`${USER_SERVER}/successBuy`, data)
+    .catch(({ response: { data } }) => ({ data }));
+
+  return {
+    type: actions.ON_SUCCESS_BUY_USER,
+    payload
+  };
+}
