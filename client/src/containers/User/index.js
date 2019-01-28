@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Button from 'components/Button';
+import PurchaseHistory from 'components/PurchaseHistory';
 import User from 'hoc/User';
 
 const Dashboard = ({ user }) => {
@@ -20,10 +21,14 @@ const Dashboard = ({ user }) => {
             linkTo="/user/info"
           />
         </div>
-        <div className="user_nfo_panel">
-          <h1>History purchases</h1>
-          <div className="user_product_block_wrapper">history</div>
-        </div>
+        {user.history && user.history.length > 0 ? (
+          <div className="user_nfo_panel">
+            <h1>History purchases</h1>
+            <div className="user_product_block_wrapper">
+              <PurchaseHistory products={user.history} />
+            </div>
+          </div>
+        ) : null}
       </div>
     </User>
   );
