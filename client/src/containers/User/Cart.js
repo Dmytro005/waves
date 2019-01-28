@@ -124,6 +124,14 @@ class UserCart extends Component {
               <div>
                 <div className="user_cart_sum">
                   <div>Total amount: ${this.state.total}</div>
+                  <div className="paypal_button_conteiner">
+                    <Paypal
+                      toPay={this.state.total}
+                      transactionError={data => this.transactionError(data)}
+                      transactionCancel={data => this.transactionCancel(data)}
+                      transactionSuccess={data => this.transactionSuccess(data)}
+                    />
+                  </div>
                 </div>
               </div>
             ) : this.state.showSuccess ? (
@@ -137,17 +145,6 @@ class UserCart extends Component {
             ) : (
               this.showNoItemsMessage()
             )}
-
-            {this.state.showTotal ? (
-              <div className="paypal_button_conteiner">
-                <Paypal
-                  toPay={this.state.total}
-                  transactionError={data => this.transactionError(data)}
-                  transactionCancel={data => this.transactionCancel(data)}
-                  transactionSuccess={data => this.transactionSuccess(data)}
-                />
-              </div>
-            ) : null}
           </div>
         </div>
       </UserLayout>

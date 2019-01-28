@@ -1,8 +1,11 @@
+const async = require('async');
+
 const express = require('express'),
   router = express.Router();
 
 const { User } = require('../models/user');
 const { Product } = require('../models/product');
+const { Payment } = require('../models/payments');
 
 const { auth } = require('../middleware/auth');
 const { admin } = require('../middleware/admin');
@@ -244,6 +247,81 @@ router.get('/removeFromCart', auth, async (req, res) => {
 
 router.get('/successBuy', auth, async (req, res) => {
   try {
+    // Push to user history
+    let history = req.body.cartDetail.reduce(
+      (acc, { name, quantity, price, _id, brand }) => {
+        acc.push({
+          dateOfPurchase: Date.now(),
+          name,
+          brand: brand.name,
+          id: _id,
+          price,
+          quantity,
+          paymentId: req.body.paymentData.paymentId
+        });
+        return acc;
+      },
+      []
+    );
+
+    // Create payment doc
+    let transactionData = {
+      user: {
+        id: req.user._id,
+        name: req.user.name,
+        lastname: req.user.lastname,
+        email: req.user.email
+      },
+      data: req.body.paymentData,
+      product: history
+    };
+
+    // Update user data after purchase
+    const { _doc: user } = await User.findByIdAndUpdate(
+      { _id: req.user._id },
+      {
+        $push: { history },
+        $set: { cart: [] }
+      },
+      { new: true }
+    );
+
+    user = user.toObject();
+
+    // Create the following payment
+    const { _doc: payment } = new Payment(transactionData);
+    payment.save((err, doc) => {
+      if (err) return res.status(400).json(err);
+
+      const products = doc.product.reduce((acc, { id, quantity }) => {
+        acc.push({ id, quantity });
+        return acc;
+      }, []);
+
+      // Update each product sold field
+      async.eachOfSeries(
+        products,
+
+        (item, callback) => {
+          Product.update(
+            { _id: item.id },
+            {
+              $inc: {
+                sold: item.quantity
+              }
+            },
+            callback
+          );
+        },
+        // This callback will be caled once after all the products would be updated
+        err => {
+          if (err) return res.status(400).json(err);
+          return res
+            .status(200)
+            .json({ success: true, cart: user.cart, cartDetail: [] });
+        }
+      );
+    });
   } catch (error) {
     console.error(error);
     return res.status(400).json({
