@@ -12,6 +12,7 @@ const app = express();
 const mongoose = require('./config/mongoose');
 mongoose.connect();
 
+app.use(express.static('client/build'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(
