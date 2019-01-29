@@ -10,7 +10,7 @@
     "dev": "concurrently -n api,ui,prettier \"  yarn run start-server  \"  \"  yarn run start-client  \"  \"  yarn run prettier  \"",
     "prettier": "npx onchange 'server/**/*.*' 'client/src/**/*.*' -- npx prettier --write {{changed}}",
     "start": "nodemon server/app.js",
-    "heroku-postbuild": "NPM_CONFIG_PORODUCTION=false npm install --prefix client && npm run build --prefix client"
+    "heroku-postbuild": "NPM_CONFIG_PORODUCTION=false npm install --prefix client && NODE_PATH=src npm run build --prefix client"
   },
   "keywords": [],
   "author": "",
