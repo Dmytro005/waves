@@ -17,7 +17,7 @@ mongoose.connection.on('error', err => {
  */
 exports.connect = () => {
   mongoose.connect(
-    process.env.DATABASE,
+    process.env.MONGODB_URI,
     {
       keepAlive: 1
     }
